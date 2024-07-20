@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+
 @Entity
 @Data
-public class Owner {
+public class Tenant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
     private String name;
 
@@ -18,7 +19,8 @@ public class Owner {
 
     private String phone_number;
 
-    @OneToMany( mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<Property> properties;
+    @OneToMany(mappedBy = "tenant")
+    private List<LeaseContract> lease_contracts;
+
 
 }

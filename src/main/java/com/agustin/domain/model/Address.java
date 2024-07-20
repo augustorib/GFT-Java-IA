@@ -4,21 +4,24 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+
 @Entity
 @Data
-public class Owner {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    private String name;
+    private String street;
 
-    private String email;
+    private String city;
 
-    private String phone_number;
+    private String state;
 
-    @OneToMany( mappedBy = "owner", fetch = FetchType.EAGER)
+    private String postal_code;
+
+    @OneToMany(mappedBy = "address")
     private List<Property> properties;
 
 }

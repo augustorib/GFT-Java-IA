@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,7 +23,20 @@ public class Property {
     private  int bathroom;
 
     private BigDecimal rental_price;
+
     private boolean availability;
+
+    @ManyToOne
+    @JoinColumn(name ="owner_id")
+    private Owner owner;
+
+    @ManyToOne
+    @JoinColumn(name ="address_id")
+    private Address address;
+
+
+    @OneToMany(mappedBy = "property")
+    private List<LeaseContract> lease_contracts;
 
 
 
