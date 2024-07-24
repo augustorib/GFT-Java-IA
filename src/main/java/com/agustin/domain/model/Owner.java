@@ -18,7 +18,7 @@ public class Owner {
 
     private String phone_number;
 
-    @OneToMany( mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Property> properties;
 
 }

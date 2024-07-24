@@ -23,9 +23,9 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Owner create(Owner ownerToCreate) {
-        if(ownerToCreate.getId() != null && ownerRepository.existsById(ownerToCreate.getId()))
+        if(ownerRepository.existsByEmail(ownerToCreate.getEmail()))
         {
-            throw  new IllegalArgumentException("This id already exists");
+            throw new IllegalArgumentException("This email already exists");
         }
 
         return ownerRepository.save(ownerToCreate);
