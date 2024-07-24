@@ -1,0 +1,1 @@
+web: java -jar target/gft-java-ia-0.0.1-SNAPSHOT.jar
