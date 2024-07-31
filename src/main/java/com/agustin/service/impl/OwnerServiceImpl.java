@@ -5,20 +5,29 @@ import com.agustin.domain.repository.OwnerRepository;
 import com.agustin.service.OwnerService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerRepository ownerRepository;
 
+
     public OwnerServiceImpl(OwnerRepository ownerRepository)
     {
         this.ownerRepository = ownerRepository;
     }
+
+    @Override
+    public List<Owner> findAll() {
+        return ownerRepository.findAll();
+    }
+
     @Override
     public Owner findById(Long id) {
-        return ownerRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return this.ownerRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -29,5 +38,27 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         return ownerRepository.save(ownerToCreate);
+    }
+
+    @Override
+    public Owner update(Long id, Owner ownerToUpdate) {
+
+        Owner dbOwner = ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Onwer with " +id + " not founded"));
+
+        if(!dbOwner.getId().equals(ownerToUpdate.getId())){
+            throw new IllegalArgumentException("Updates Ids must be the same");
+        }
+
+        dbOwner.setName(ownerToUpdate.getName());
+        dbOwner.setEmail(ownerToUpdate.getEmail());
+        dbOwner.setPhone_number(ownerToUpdate.getPhone_number());
+
+        return ownerRepository.save(dbOwner);
+    }
+
+    @Override
+    public void delete(Long id) {
+        var ownerToDelete = ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("The owner is not founded"));
+        ownerRepository.delete(ownerToDelete);
     }
 }

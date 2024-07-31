@@ -2,9 +2,8 @@ package com.agustin.service;
 
 import com.agustin.domain.model.Owner;
 
-public interface OwnerService {
+public interface OwnerService extends CrudService<Long, Owner>{
 
-    Owner findById(Long id);
-    Owner create(Owner ownerToCreate);
+
 
 }

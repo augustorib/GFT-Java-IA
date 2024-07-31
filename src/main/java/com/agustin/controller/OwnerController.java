@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/owners")
@@ -17,6 +18,13 @@ public class OwnerController {
     public OwnerController(OwnerService ownerService)
     {
         this.ownerService = ownerService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Owner>> findAll()
+    {
+        var owners = ownerService.findAll();
+        return ResponseEntity.ok(owners);
     }
 
     @GetMapping("/{id}")
@@ -39,4 +47,19 @@ public class OwnerController {
 
         return  ResponseEntity.created(location).body(ownerCreated);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Owner> update(@PathVariable Long id, @RequestBody Owner owner)
+    {
+        var ownerUpdated = ownerService.update(id, owner);
+        return ResponseEntity.ok(ownerUpdated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Owner> delete(@PathVariable Long id)
+    {
+        ownerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
