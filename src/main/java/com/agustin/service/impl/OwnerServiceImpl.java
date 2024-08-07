@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerRepository ownerRepository;
-
 
     public OwnerServiceImpl(OwnerRepository ownerRepository)
     {
@@ -44,10 +43,6 @@ public class OwnerServiceImpl implements OwnerService {
     public Owner update(Long id, Owner ownerToUpdate) {
 
         Owner dbOwner = ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Onwer with " +id + " not founded"));
-
-        if(!dbOwner.getId().equals(ownerToUpdate.getId())){
-            throw new IllegalArgumentException("Updates Ids must be the same");
-        }
 
         dbOwner.setName(ownerToUpdate.getName());
         dbOwner.setEmail(ownerToUpdate.getEmail());
