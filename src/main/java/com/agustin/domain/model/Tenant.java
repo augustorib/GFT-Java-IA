@@ -11,7 +11,7 @@ public class Tenant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private String name;
 
@@ -19,8 +19,8 @@ public class Tenant {
 
     private String phone_number;
 
-    @OneToMany(mappedBy = "tenant")
-    private List<LeaseContract> lease_contracts;
+//    @OneToMany(mappedBy = "tenant")
+//    private List<LeaseContract> lease_contracts;
 
 
 }
