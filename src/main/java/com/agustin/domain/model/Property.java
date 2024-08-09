@@ -1,7 +1,9 @@
 package com.agustin.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,10 +11,10 @@ import java.util.List;
 @Entity
 @Data
 public class Property {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private String type;
 
@@ -24,19 +26,14 @@ public class Property {
 
     private BigDecimal rental_price;
 
-    private boolean availability;
+    private Boolean availability;
 
     @ManyToOne
     @JoinColumn(name ="owner_id")
+    @JsonBackReference
     private Owner owner;
 
-    @ManyToOne
-    @JoinColumn(name ="address_id")
-    private Address address;
 
-
-    @OneToMany(mappedBy = "property")
-    private List<LeaseContract> lease_contracts;
 
 
 
