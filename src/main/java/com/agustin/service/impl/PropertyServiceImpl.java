@@ -37,12 +37,24 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Transactional
-    public Property update(Long aLong, Property entity) {
-        return null;
+    public Property update(Long id, Property property) {
+
+        var propertyDb = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Proerty with " + id + " not founded"));
+
+        propertyDb.setType(property.getType());
+        propertyDb.setDescription(property.getDescription());
+        propertyDb.setBedroom(property.getBedroom());
+        propertyDb.setBathroom(property.getBathroom());
+        propertyDb.setAvailability(property.getAvailability());
+        propertyDb.setRental_price(property.getRental_price());
+        propertyDb.setOwner(property.getOwner());
+
+        return propertyRepository.save(propertyDb);
     }
 
     @Transactional
-    public void delete(Long aLong) {
-
+    public void delete(Long id) {
+        var ownerToDelete = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("property not founded"));
+        propertyRepository.delete(ownerToDelete);
     }
 }
