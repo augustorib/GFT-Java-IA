@@ -1,5 +1,6 @@
 package com.agustin.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +19,8 @@ public class Owner {
 
     private String phone_number;
 
-    @OneToMany( mappedBy = "owner", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Property> properties;
 
 }

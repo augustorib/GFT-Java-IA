@@ -1,10 +1,11 @@
 package com.agustin.controller;
 
-import com.agustin.controller.dto.OwnerDto;
+import com.agustin.controller.dto.owner.OwnerRequestDto;
 import com.agustin.domain.model.Owner;
 import com.agustin.service.OwnerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -12,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping("/owners")
 @Tag(name = "Owners Controller", description = "Managing owners .")
 public class OwnerController {
@@ -28,7 +30,6 @@ public class OwnerController {
     {
         var owners = ownerService.findAll();
 
-        //var ownersDto = owners.stream().map(OwnerDto::new).collect(Collectors.toList());
         return ResponseEntity.ok(owners);
     }
 
@@ -41,7 +42,7 @@ public class OwnerController {
     }
 
     @PostMapping
-    public ResponseEntity<Owner> create(@RequestBody OwnerDto ownerToCreate)
+    public ResponseEntity<Owner> create(@RequestBody OwnerRequestDto ownerToCreate)
     {
         var ownerCreated = ownerService.create(ownerToCreate.toModel());
 
@@ -55,7 +56,7 @@ public class OwnerController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Owner> update(@PathVariable Long id, @RequestBody OwnerDto owner)
+    public ResponseEntity<Owner> update(@PathVariable Long id, @RequestBody OwnerRequestDto owner)
     {
         var ownerUpdated = ownerService.update(id, owner.toModel());
         return ResponseEntity.ok(ownerUpdated);

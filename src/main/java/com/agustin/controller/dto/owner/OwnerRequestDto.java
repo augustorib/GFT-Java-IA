@@ -1,10 +1,10 @@
-package com.agustin.controller.dto;
+package com.agustin.controller.dto.owner;
 
 import com.agustin.domain.model.Owner;
 
-public record OwnerDto(String name, String email, String phone_number) {
+public record OwnerRequestDto(String name, String email, String phone_number) {
 
-    public OwnerDto(Owner model)
+    public OwnerRequestDto(Owner model)
     {
        this(
                model.getName(),
