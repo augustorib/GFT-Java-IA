@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TenantServiceImpl implements TenantService {
@@ -23,8 +24,10 @@ public class TenantServiceImpl implements TenantService {
         return tenantRepository.findAll();
     }
 
-    public Tenant findById(Long aLong) {
-        return null;
+    @Transactional(readOnly = true)
+    public Tenant findById(Long id) {
+
+        return tenantRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
