@@ -1,5 +1,6 @@
 package com.agustin.service.impl;
 
+import com.agustin.domain.model.Owner;
 import com.agustin.domain.model.Tenant;
 import com.agustin.domain.repository.TenantRepository;
 import com.agustin.service.TenantService;
@@ -30,18 +31,28 @@ public class TenantServiceImpl implements TenantService {
         return tenantRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    @Override
-    public Tenant create(Tenant entity) {
-        return null;
+    @Transactional
+    public Tenant create(Tenant tenantToCreate)
+    {
+        return tenantRepository.save(tenantToCreate);
     }
 
-    @Override
-    public Tenant update(Long aLong, Tenant entity) {
-        return null;
+    @Transactional
+    public Tenant update(Long id, Tenant tenantToUpdate)
+    {
+        var dbTenant = tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tenant with " + id + " not founded"));
+
+        dbTenant.setName(tenantToUpdate.getName());
+        dbTenant.setEmail(tenantToUpdate.getEmail());
+        dbTenant.setPhone_number(tenantToUpdate.getPhone_number());
+
+        return  tenantRepository.save(dbTenant);
     }
 
-    @Override
-    public void delete(Long aLong) {
-
+    @Transactional
+    public void delete(Long id)
+    {
+        var tenantToDelete = tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("The tenant is not founded"));
+        tenantRepository.delete(tenantToDelete);
     }
 }
