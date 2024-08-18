@@ -60,3 +60,6 @@ classDiagram
     Property "1" -- "1" Address 
     Tenant "1" -- "*" LeaseContract 
 ```
+## Documentação API (Swagger)
+
+### [https://gft-java-ia-prd.up.railway.app/swagger-ui.html](https://gft-java-ia-prd.up.railway.app/swagger-ui.html)
