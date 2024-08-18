@@ -13,7 +13,7 @@ public class LeaseContract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private Date start_date;
 
