@@ -52,6 +52,7 @@ classDiagram
         String city
         String state
         String postal_code
+        int address_number
     }
 
     Owner "1" -- "*" Property 

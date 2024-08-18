@@ -3,6 +3,7 @@ package com.agustin.controller;
 import com.agustin.controller.dto.property.PropertyRequestDto;
 import com.agustin.controller.dto.property.PropertyResponseDto;
 import com.agustin.domain.model.Property;
+import com.agustin.service.AddressService;
 import com.agustin.service.OwnerService;
 import com.agustin.service.PropertyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,10 +23,13 @@ public class PropertyController {
     private final PropertyService propertyService;
     private final OwnerService ownerService;
 
-    public PropertyController(PropertyService propertyService, OwnerService ownerService)
+    private final AddressService addressService;
+
+    public PropertyController(PropertyService propertyService, OwnerService ownerService, AddressService addressService)
     {
         this.propertyService = propertyService;
         this.ownerService = ownerService;
+        this.addressService = addressService;
     }
 
 
@@ -53,7 +57,9 @@ public class PropertyController {
 
         var owner = ownerService.findById(propertyToCreate.owner_id());
 
-        var propertyModel = propertyToCreate.toModel(owner);
+        var address = addressService.findById(propertyToCreate.address_id());
+
+        var propertyModel = propertyToCreate.toModel(owner, address);
 
         var propertyCreated = new PropertyResponseDto(propertyService.create(propertyModel));
 
@@ -70,7 +76,9 @@ public class PropertyController {
     {
         var owner = ownerService.findById(property.owner_id());
 
-        var propertyToUpdate = propertyService.update(id, property.toModel(owner));
+        var address = addressService.findById(property.address_id());
+
+        var propertyToUpdate = propertyService.update(id, property.toModel(owner, address));
 
         return  ResponseEntity.ok(new PropertyResponseDto(propertyToUpdate));
 

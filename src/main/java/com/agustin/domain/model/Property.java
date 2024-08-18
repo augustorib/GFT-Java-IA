@@ -1,6 +1,7 @@
 package com.agustin.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,8 +34,14 @@ public class Property {
     @JsonBackReference
     private Owner owner;
 
+    @ManyToOne
+    @JoinColumn(name ="address_id")
+    @JsonBackReference
+    private Address address;
 
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "property")
+    private List<LeaseContract> lease_contracts;
 
 
 

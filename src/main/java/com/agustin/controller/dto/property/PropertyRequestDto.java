@@ -1,11 +1,12 @@
 package com.agustin.controller.dto.property;
 
+import com.agustin.domain.model.Address;
 import com.agustin.domain.model.Owner;
 import com.agustin.domain.model.Property;
 
 import java.math.BigDecimal;
 
-public record PropertyRequestDto(String type, String description, int bathroom, int bedroom, BigDecimal rental_price, Boolean availability, Long owner_id) {
+public record PropertyRequestDto(String type, String description, int bathroom, int bedroom, BigDecimal rental_price, Boolean availability, Long owner_id, Long address_id) {
 
     public PropertyRequestDto(Property model){
         this(
@@ -15,11 +16,12 @@ public record PropertyRequestDto(String type, String description, int bathroom, 
                 model.getBedroom(),
                 model.getRental_price(),
                 model.getAvailability(),
-                model.getOwner().getId()
+                model.getOwner().getId(),
+                model.getAddress().getId()
         );
     }
 
-    public Property toModel(Owner owner)
+    public Property toModel(Owner owner, Address address)
     {
         Property model = new Property();
 
@@ -30,6 +32,7 @@ public record PropertyRequestDto(String type, String description, int bathroom, 
         model.setRental_price(this.rental_price);
         model.setAvailability(this.availability);
         model.setOwner(owner);
+        model.setAddress(address);
 
         return model;
     }
