@@ -27,7 +27,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Transactional(readOnly = true)
     public Owner findById(Long id) {
-        return this.ownerRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return this.ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Owner id " + id + " not founded"));
     }
 
     @Transactional
@@ -43,7 +43,7 @@ public class OwnerServiceImpl implements OwnerService {
     @Transactional
     public Owner update(Long id, Owner ownerToUpdate) {
 
-        Owner dbOwner = ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Onwer with " +id + " not founded"));
+        Owner dbOwner = ownerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Owner id " +id + " not founded"));
 
         dbOwner.setName(ownerToUpdate.getName());
         dbOwner.setEmail(ownerToUpdate.getEmail());
