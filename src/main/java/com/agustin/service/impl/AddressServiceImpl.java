@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -27,7 +26,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Transactional(readOnly = true)
     public Address findById(Long id) {
-        return addressRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return addressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Address id " +id + " not founded"));
     }
 
     @Transactional
@@ -36,12 +35,24 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Transactional
-    public Address update(Long id, Address model) {
-        return null;
+    public Address update(Long id, Address addressToUpdate)
+    {
+
+        var addressDb = addressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Address id " + id + " not founded"));
+
+        addressDb.setStreet(addressToUpdate.getStreet());
+        addressDb.setCity(addressToUpdate.getCity());
+        addressDb.setState(addressToUpdate.getState());
+        addressDb.setPostal_code(addressToUpdate.getPostal_code());
+        addressDb.setAddress_Number(addressToUpdate.getAddress_Number());
+
+        return addressDb;
     }
 
     @Transactional
-    public void delete(Long id) {
-
+    public void delete(Long id)
+    {
+        var addressToDelete = addressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("The address is not founded"));
+        addressRepository.delete(addressToDelete);
     }
 }
