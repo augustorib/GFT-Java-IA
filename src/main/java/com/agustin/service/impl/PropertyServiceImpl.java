@@ -27,7 +27,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Transactional(readOnly = true)
     public Property findById(Long id) {
-        return this.propertyRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return this.propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Proerty id " + id + " not founded"));
     }
 
     @Transactional
@@ -39,7 +39,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional
     public Property update(Long id, Property property) {
 
-        var propertyDb = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Proerty with " + id + " not founded"));
+        var propertyDb = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Proerty id " + id + " not founded"));
 
         propertyDb.setType(property.getType());
         propertyDb.setDescription(property.getDescription());
@@ -54,7 +54,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Transactional
     public void delete(Long id) {
-        var ownerToDelete = propertyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("property not founded"));
+        var ownerToDelete = propertyRepository.findById(id).orElseThrow(NoSuchElementException::new);
         propertyRepository.delete(ownerToDelete);
     }
 }

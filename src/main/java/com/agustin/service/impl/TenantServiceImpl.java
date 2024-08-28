@@ -28,7 +28,7 @@ public class TenantServiceImpl implements TenantService {
     @Transactional(readOnly = true)
     public Tenant findById(Long id) {
 
-        return tenantRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tenant id " + id + " not founded"));
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class TenantServiceImpl implements TenantService {
     @Transactional
     public Tenant update(Long id, Tenant tenantToUpdate)
     {
-        var dbTenant = tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tenant with " + id + " not founded"));
+        var dbTenant = tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Tenant id " + id + " not founded"));
 
         dbTenant.setName(tenantToUpdate.getName());
         dbTenant.setEmail(tenantToUpdate.getEmail());
@@ -52,7 +52,7 @@ public class TenantServiceImpl implements TenantService {
     @Transactional
     public void delete(Long id)
     {
-        var tenantToDelete = tenantRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("The tenant is not founded"));
+        var tenantToDelete = tenantRepository.findById(id).orElseThrow(NoSuchElementException::new);
         tenantRepository.delete(tenantToDelete);
     }
 }
