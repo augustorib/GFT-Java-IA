@@ -64,5 +64,23 @@ public class LeaseContractController {
 
         return  ResponseEntity.created(location).body(leaseContractCreated);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<LeaseContract> update(@RequestParam Long id, @RequestBody LeaseContractRequestDto leaseContract)
+    {
+        Property property = propertyService.findById(leaseContract.property_id());
+
+        Tenant tenant = tenantService.findById(leaseContract.tenant_id());
+
+        var leaseContractToUpdate = leaseContractService.update(id, leaseContract.toModel(property, tenant));
+
+        return  ResponseEntity.ok(leaseContractToUpdate);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Property> delete(@PathVariable Long id)
+    {
+        leaseContractService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
