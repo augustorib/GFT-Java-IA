@@ -39,7 +39,14 @@ public class LeaseContractController {
         return ResponseEntity.ok(leaseContracts);
 
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<LeaseContract> findById(@RequestParam Long id)
+    {
+        var leaseContracts = leaseContractService.findById(id);
 
+        return ResponseEntity.ok(leaseContracts);
+
+    }
 
     @PostMapping
     public ResponseEntity<LeaseContract> create(@RequestBody LeaseContractRequestDto leaseContractToCreate)

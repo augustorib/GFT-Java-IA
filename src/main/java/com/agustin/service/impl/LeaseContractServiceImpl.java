@@ -24,8 +24,9 @@ public class LeaseContractServiceImpl implements LeaseContractService {
     }
 
     @Transactional(readOnly = true)
-    public LeaseContract findById(Long aLong) {
-        return null;
+    public LeaseContract findById(Long id)
+    {
+        return leaseContractRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Lease Contract id " + id + " not founded"));
     }
 
     @Transactional

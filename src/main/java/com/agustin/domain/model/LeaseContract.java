@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -15,9 +15,9 @@ public class LeaseContract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date start_date;
+    private LocalDate start_date;
 
-    private Date end_date;
+    private LocalDate end_date;
 
     private BigDecimal security_deposit;
 

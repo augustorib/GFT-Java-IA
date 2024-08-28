@@ -5,15 +5,18 @@ import com.agustin.domain.model.Property;
 import com.agustin.domain.model.Tenant;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public record LeaseContractRequestDto(Date start_date, Date end_date, BigDecimal security_deposit, Long property_id, Long tenant_id) {
 
+public record LeaseContractRequestDto(String start_date, String end_date, BigDecimal security_deposit, Long property_id, Long tenant_id) {
+
+    private static final DateTimeFormatter API_DATE = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public LeaseContractRequestDto(LeaseContract model)
     {
       this(
-              model.getStart_date(),
-              model.getEnd_date(),
+              model.getStart_date().format(API_DATE),
+              model.getEnd_date().format(API_DATE),
               model.getSecurity_deposit(),
               model.getProperty().getId(),
               model.getTenant().getId()
@@ -25,8 +28,8 @@ public record LeaseContractRequestDto(Date start_date, Date end_date, BigDecimal
     {
         LeaseContract model = new LeaseContract();
 
-        model.setStart_date(this.start_date);
-        model.setEnd_date(this.end_date);
+        model.setStart_date(LocalDate.parse(this.start_date, API_DATE));
+        model.setEnd_date(LocalDate.parse(this.end_date, API_DATE));
         model.setSecurity_deposit(this.security_deposit);
         model.setProperty(property);
         model.setTenant(tenant);
