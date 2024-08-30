@@ -7,6 +7,9 @@ import com.agustin.domain.model.Tenant;
 import com.agustin.service.LeaseContractService;
 import com.agustin.service.PropertyService;
 import com.agustin.service.TenantService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/leaseContracts")
-@Tag(name = "Lease Contract Controller", description = "Managing contracts .")
+@Tag(name = "Lease Contract Controller", description = "Managing contracts.")
 public class LeaseContractController {
 
     private final LeaseContractService leaseContractService;
@@ -32,6 +35,10 @@ public class LeaseContractController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all lease contracts", description = "Retrieve a list of all registered lease contract")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation successful")
+    })
     public ResponseEntity<List<LeaseContract>> findAll()
     {
         var leaseContracts = leaseContractService.findAll();
@@ -40,6 +47,11 @@ public class LeaseContractController {
 
     }
     @GetMapping("/{id}")
+    @Operation(summary = "Get lease contract by Id", description = "Retrieve lease contract according to requested Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Response successful"),
+            @ApiResponse(responseCode = "422", description = "lease contract id not processable")
+    })
     public ResponseEntity<LeaseContract> findById(@RequestParam Long id)
     {
         var leaseContracts = leaseContractService.findById(id);
@@ -49,6 +61,11 @@ public class LeaseContractController {
     }
 
     @PostMapping
+    @Operation(summary = "Create lease contract", description = "Create lease contract with property and tenant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "lease contract created"),
+            @ApiResponse(responseCode = "422", description = "Id not processable"),
+    })
     public ResponseEntity<LeaseContract> create(@RequestBody LeaseContractRequestDto leaseContractToCreate)
     {
         Property property = propertyService.findById(leaseContractToCreate.property_id());
@@ -65,6 +82,11 @@ public class LeaseContractController {
         return  ResponseEntity.created(location).body(leaseContractCreated);
     }
     @PutMapping("/{id}")
+    @Operation(summary = "Update lease contract", description = "Update the data of an existing lease contract according with Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "lease contract updated successfully"),
+            @ApiResponse(responseCode = "422", description = "Id not processable")
+    })
     public ResponseEntity<LeaseContract> update(@RequestParam Long id, @RequestBody LeaseContractRequestDto leaseContract)
     {
         Property property = propertyService.findById(leaseContract.property_id());
@@ -77,6 +99,11 @@ public class LeaseContractController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a lease contract", description = "Delete an existing lease contract based on its Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "lease contract deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "lease contract not found")
+    })
     public ResponseEntity<Property> delete(@PathVariable Long id)
     {
         leaseContractService.delete(id);
