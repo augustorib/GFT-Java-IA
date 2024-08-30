@@ -6,6 +6,9 @@ import com.agustin.domain.model.Property;
 import com.agustin.service.AddressService;
 import com.agustin.service.OwnerService;
 import com.agustin.service.PropertyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/property")
-@Tag(name = "Property Controller", description = "Managing properties .")
+@Tag(name = "Property Controller", description = "Managing properties.")
 public class PropertyController {
 
     private final PropertyService propertyService;
@@ -34,6 +37,10 @@ public class PropertyController {
 
 
     @GetMapping
+    @Operation(summary = "Get all properties", description = "Retrieve a list of all registered properties")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation successful")
+    })
     public ResponseEntity<List<PropertyResponseDto>> findAll()
     {
         var properties = propertyService.findAll();
@@ -44,6 +51,11 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get property by Id", description = "Retrieve property according to requested Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Response successful"),
+            @ApiResponse(responseCode = "422", description = "Property id not processable")
+    })
     public ResponseEntity<PropertyResponseDto> findById(@PathVariable Long id)
     {
         var property = propertyService.findById(id);
@@ -52,6 +64,11 @@ public class PropertyController {
     }
 
     @PostMapping
+    @Operation(summary = "Create property", description = "Create Property with Address and Owner")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Property created"),
+            @ApiResponse(responseCode = "422", description = "Id not processable"),
+    })
     public ResponseEntity<PropertyResponseDto> create(@RequestBody PropertyRequestDto propertyToCreate)
     {
 
@@ -72,6 +89,11 @@ public class PropertyController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update property", description = "Update the data of an existing property according with Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Property updated successfully"),
+            @ApiResponse(responseCode = "422", description = "Id not processable")
+    })
     public ResponseEntity<PropertyResponseDto> update(@PathVariable Long id, @RequestBody PropertyRequestDto property )
     {
         var owner = ownerService.findById(property.owner_id());
@@ -86,6 +108,11 @@ public class PropertyController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a property", description = "Delete an existing property based on its Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Property deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Property not found")
+    })
     public ResponseEntity<Property> delete(@PathVariable Long id)
     {
         propertyService.delete(id);
