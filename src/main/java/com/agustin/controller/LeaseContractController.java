@@ -64,7 +64,8 @@ public class LeaseContractController {
     @Operation(summary = "Create lease contract", description = "Create lease contract with property and tenant")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "lease contract created"),
-            @ApiResponse(responseCode = "422", description = "Id not processable"),
+            @ApiResponse(responseCode = "400", description = "Invalid date format"),
+            @ApiResponse(responseCode = "422", description = "Id not processable")
     })
     public ResponseEntity<LeaseContract> create(@RequestBody LeaseContractRequestDto leaseContractToCreate)
     {
@@ -85,6 +86,7 @@ public class LeaseContractController {
     @Operation(summary = "Update lease contract", description = "Update the data of an existing lease contract according with Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "lease contract updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid date format"),
             @ApiResponse(responseCode = "422", description = "Id not processable")
     })
     public ResponseEntity<LeaseContract> update(@RequestParam Long id, @RequestBody LeaseContractRequestDto leaseContract)

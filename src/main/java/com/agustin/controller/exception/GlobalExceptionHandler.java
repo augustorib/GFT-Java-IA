@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNotFoundException(NoSuchElementException notFound)
     {
         return new ResponseEntity<>("Resource ID not found", HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<String> handleDateParseException(DateTimeParseException parseFailed)
+    {
+        return new ResponseEntity<>("Invalid date format. Please provide the date in the format dd-MM-yyyy", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Throwable.class)
